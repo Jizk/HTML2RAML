@@ -59,4 +59,4 @@ RAML每个List元素，包含一系列的Key，这些Key主要分为段落内容
 这里只简单介绍了自己目前当前写到的RAML解析器，详细的RAML可以参照[轻芒](https://github.com/qingmang-team/docs/blob/master/raml/intro.md)。轻芒涵盖了大多数可以用到的标签。主要要了解HTML解析到DOM的规则，约定好自己的JSON格式，可以很轻松的实现HTML to RAML、RAML to HTML。后期逐步实现，加油！
 
 # 更新记录
-- 11.27.19 HTML2RAML单项解析，简单支持文本标签、加粗样式、块标签样式、按照句号切割每个段落的句子。
+- 11.27.19 HTML2RAML单向解析，简单支持文本标签、加粗样式、块标签样式、按照句号切割每个段落的句子。
