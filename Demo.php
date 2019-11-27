@@ -80,7 +80,7 @@ class Demo
                     }elseif (strpos($item->innerHtml(), 'img') !== false){ // <p><img></img></p>
                         $ret[] = [];
 
-                    }elseif ($tag == 'audio'){
+                    }elseif ($tag == 'video'){
                         $ret[] = [];
 
                     }
