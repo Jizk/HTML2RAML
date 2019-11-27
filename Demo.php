@@ -68,7 +68,11 @@ class Demo
                         }elseif ($tag == 'ul') {
                             $ret[] = [];
                         }elseif (in_array($tag, self::$hTagNameArray)){
-                            $ret[] = [];
+                            $align = Utility::Instance()->getCssValueFromItem($item, 'text\-align');
+                            $id = Utility::Instance()->getId($item);
+                            $pAml = Builder::Instance()->buildTextNode($sourceContent, $tag, $align, $id);
+                            Utility::Instance()->parseMarkUp($item, $pAml);
+                            $ret[] = $pAml;
                         }
                     }elseif ($tag == 'img'){
                         $ret[] = [];
@@ -84,33 +88,14 @@ class Demo
             }
         }
 
-        return json_encode($ret, 256);
+        return $ret;
+//        return json_encode($ret, 256);
     }
 
 
 
 }
 
-//$html = '<body><div><div><h2>hello world</h2></div></div></body>';
-//$html = str_get_html($html);
-//$a=0;
-//foreach ($html->find('*') as $item){
-//    if (empty($item->dataId)){
-//        $item->predataId = $a++;
-//    }
-//}
-//var_dump(strval($html));
-//
-//$dom = new Dom;
-////var_dump($dom);
-//$dom->loadStr($html, []);
-//var_dump($dom->root->firstChild());
-
-
-//$e = $html->find("*", 0);
-//print_r($e->children(1));
-//print_r($e->plaintext);
-//print_r($e->outHtml);
 $demo = new Demo();
 //$demo->html2Raml();
 print_r($demo->html2Raml());
