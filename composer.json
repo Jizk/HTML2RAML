@@ -1,0 +1,34 @@
+{
+  "name": "thefair/thefairlib",
+  "type": "library",
+  "description": "The PHP library for TheFair",
+  "keywords": [
+    "thefair"
+  ],
+  "homepage": "https://github.com/thefair-net/thefairlib",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Zhang Han",
+      "email": "zhanghan@thefair.net.cn"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.1",
+    "predis/predis": "1.0.3",
+    "illuminate/database": "<4.2",
+    "nmred/kafka-php": "^0.1",
+    "endroid/qrcode": "<2.0",
+    "php-amqplib/php-amqplib": ">=2.8.1",
+    "elasticsearch/elasticsearch": "~2.0",
+    "aliyuncs/oss-sdk-php": "~2.0",
+    "paquettg/php-html-parser": "^1.7"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "psr-4": {
+      "TheFairLib\\": ""
+    }
+  }
+}
