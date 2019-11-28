@@ -1,34 +1,32 @@
 {
-  "name": "thefair/thefairlib",
+  "name": "thefair/html2raml",
   "type": "library",
-  "description": "The PHP library for TheFair",
+  "description": "An HTML-to-RAML conversion helper for PHP",
   "keywords": [
-    "thefair"
+    "thefair",
+    "raml",
+    "html"
   ],
-  "homepage": "https://github.com/thefair-net/thefairlib",
+  "homepage": "https://github.com/Jizk/HTML2RAML",
   "license": "MIT",
   "authors": [
     {
-      "name": "Zhang Han",
-      "email": "zhanghan@thefair.net.cn"
+      "name": "Jizk",
+      "email": "jizhongkai@thefair.net.cn"
+    },
+    {
+      "name": "lee",
+      "email": "lijingyu@thefair.net.cn"
     }
   ],
   "require": {
-    "php": ">=5.4.1",
-    "predis/predis": "1.0.3",
-    "illuminate/database": "<4.2",
-    "nmred/kafka-php": "^0.1",
-    "endroid/qrcode": "<2.0",
-    "php-amqplib/php-amqplib": ">=2.8.1",
-    "elasticsearch/elasticsearch": "~2.0",
-    "aliyuncs/oss-sdk-php": "~2.0",
     "paquettg/php-html-parser": "^1.7"
   },
   "require-dev": {
   },
   "autoload": {
     "psr-4": {
-      "TheFairLib\\": ""
+      "Thefair\\HTMLToRAML\\": "src/"
     }
   }
 }
