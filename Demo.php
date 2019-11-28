@@ -63,7 +63,7 @@ class Demo
                             $id = Utility::Instance()->getId($item);
                             $pAml = Builder::Instance()->buildTextNode($sourceContent, '', $align, $id);
                             Utility::Instance()->parseMarkUp($item, $pAml);
-                            Utility::Instance()->parseSentence($item, $pAml);
+//                            Utility::Instance()->parseSentence($item, $pAml);
                             $ret[] = $pAml;
                         }elseif ($tag == 'ul') {
                             $ret[] = [];
