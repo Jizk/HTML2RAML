@@ -85,6 +85,59 @@ class Builder
     }
 
     /**
+     * video 视频
+     * @param Dom\HtmlNode $item
+     * @param $id
+     * @return array
+     */
+    function buildVideoNode($item, $id)
+    {
+        $url = $item->getAttribute('src');
+        $cover = $item->getAttribute('controls poster');
+
+        $ret = [
+            'id' => $id,
+            'type' => 2,
+            'media' => [
+                'source' => $url
+            ],
+        ];
+
+        if (!empty($cover)){
+            $ret['media']['cover'] = $cover;
+        }
+
+        return $ret;
+    }
+
+    /**
+     * li 排版
+     * @param $text
+     * @param $id
+     * @param $order
+     * @return array
+     */
+
+    function buildLiNode($text, $id, $order)
+    {
+        $ret = [
+            'id' => $id,
+            'type' => 0,
+            'text' => [
+                'text' => $text
+            ],
+            'li' => [
+                'type' => 'ul',
+                'level' => 1,
+                'order' => $order,
+            ],
+            'blockquote' => 0,
+        ];
+
+        return $ret;
+    }
+
+    /**
      * 计算起止位置
      * @param Dom\HtmlNode $item
      * @param Dom\HtmlNode $baseItem

@@ -54,7 +54,9 @@ class Demo
                 if ($tag == 'p'
                     || $tag == 'image'
                     || $tag == 'ul'
-                    || in_array($tag, self::$hTagNameArray)){
+                    || in_array($tag, self::$hTagNameArray)
+                    || $tag == 'video'
+                ){
                     $innerContent = $item->innerHtml();
                     $sourceContent = Utility::Instance()->trimContent(strip_tags($innerContent));
                     if (!empty($sourceContent)){
@@ -66,7 +68,18 @@ class Demo
 //                            Utility::Instance()->parseSentence($item, $pAml);
                             $ret[] = $pAml;
                         }elseif ($tag == 'ul') {
-                            $ret[] = [];
+                            $ulChildren = Utility::Instance()->getChildrenByTag($item, 'li');
+                            $order = 0;
+                            /**
+                             * @var Dom\HtmlNode $child
+                             */
+                            foreach ($ulChildren as $child){
+                                $id = Utility::Instance()->getId($child);
+                                $childrenItem = Utility::Instance()->trimContent(strip_tags($child->innerHtml()));
+                                $pAml = Builder::Instance()->buildLiNode($childrenItem, $id, ++$order);
+                                Utility::Instance()->parseMarkUp($child, $pAml);
+                                $ret[] = $pAml;
+                            }
                         }elseif (in_array($tag, self::$hTagNameArray)){
                             $align = Utility::Instance()->getCssValueFromItem($item, 'text\-align');
                             $id = Utility::Instance()->getId($item);
@@ -88,8 +101,9 @@ class Demo
                             }
                         }
                     }elseif ($tag == 'video'){
-                        $ret[] = [];
-
+                        $id = Utility::Instance()->getId($item);
+                        $pAml = Builder::Instance()->buildVideoNode($item, $id);
+                        $ret[] = $pAml;
                     }
                 }
             }

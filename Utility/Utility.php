@@ -260,7 +260,7 @@ class Utility
          * @var Dom\HtmlNode $item
          */
         foreach ($children as $item){
-            $tagName = $item->getTag()->name();
+            $tagName = strtolower($item->getTag()->name());
             if ($tagName == $tag){
                 $ret[] = $item;
             }
