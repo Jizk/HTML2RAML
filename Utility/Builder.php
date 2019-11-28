@@ -42,11 +42,11 @@ class Builder
             ]
         ];
 
-        if (!empty($lineType)){
+        if (!empty($lineType)) {
             $ret['text']['linetype'] = $lineType;
         }
 
-        if (!empty($align)){
+        if (!empty($align)) {
             $ret['text']['align'] = $align;
         }
 
@@ -73,11 +73,11 @@ class Builder
             ]
         ];
 
-        if (!empty($width)){
+        if (!empty($width)) {
             $ret['image']['width'] = $width;
         }
 
-        if (!empty($height)){
+        if (!empty($height)) {
             $ret['image']['height'] = $height;
         }
 
@@ -103,7 +103,7 @@ class Builder
             ],
         ];
 
-        if (!empty($cover)){
+        if (!empty($cover)) {
             $ret['media']['cover'] = $cover;
         }
 
@@ -173,7 +173,7 @@ class Builder
         $color = Utility::Instance()->getCssValueFromItem($item, 'color');
         $pos = $this->getStartEnd($item, $baseItem);
 
-        if (!empty($text)){
+        if (!empty($text)) {
             $markUp = [
                 'tag' => 'span',
                 'value' => $color,
@@ -182,7 +182,7 @@ class Builder
             ];
 
             return $markUp;
-        }else{
+        } else {
             return [];
         }
     }
@@ -198,14 +198,14 @@ class Builder
         $text = Utility::Instance()->trimContent(strip_tags($item->innerHtml()));
         $pos = $this->getStartEnd($item, $baseItem);
 
-        if (!empty($text)){
+        if (!empty($text)) {
             $markUp = [
                 'tag' => 'strong',
                 'start' => $pos['start'],
                 'end' => $pos['end'],
             ];
             return $markUp;
-        }else{
+        } else {
             return [];
         }
     }
@@ -219,14 +219,14 @@ class Builder
      */
     function buildSentence($text, $start, $end)
     {
-        if (!empty($text)){
+        if (!empty($text)) {
             $markUp = [
                 'tag' => 'sentence',
                 'start' => $start,
                 'end' => $end,
             ];
             return $markUp;
-        }else{
+        } else {
             return [];
         }
     }
@@ -244,7 +244,7 @@ class Builder
         $height = $item->getAttribute('data-height');
         $pos = $this->getStartEnd($item, $baseItem);
 
-        if (!empty($url)){
+        if (!empty($url)) {
             $markups = [
                 'tag' => 'a',
                 'start' => $pos['start'],
@@ -252,15 +252,15 @@ class Builder
                 'source' => $url,
             ];
 
-            if (!empty($width)){
+            if (!empty($width)) {
                 $markups['width'] = $width;
             }
 
-            if (!empty($height)){
+            if (!empty($height)) {
                 $markups['height'] = $height;
             }
             return $markups;
-        }else{
+        } else {
             return [];
         }
     }

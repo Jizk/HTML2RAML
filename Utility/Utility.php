@@ -33,16 +33,18 @@ class Utility
         $this->addId($html);
         return strval($html);
     }
+
     function addId(&$html)
     {
-        foreach ($html->find('*') as $item){
-            if (empty($item->dataId)){
+        foreach ($html->find('*') as $item) {
+            if (empty($item->dataId)) {
                 $item->dataId = self::$cnt++;
             }
 
             $this->addId($item);
         }
     }
+
     /**
      * @param Dom\HtmlNode $item
      * @return string
@@ -62,6 +64,7 @@ class Utility
         $item = str_replace('&nbsp;', '', $item);
         return trim(html_entity_decode($item));
     }
+
     /**
      * 清洗多级无用的div
      * @param $html
@@ -69,23 +72,24 @@ class Utility
      */
     function cleanHtml($html)
     {
-        do{
+        do {
             $html = trim($html);
             $inHtml = $html;
-            if(mb_substr($html, 0, mb_strlen('<div>', 'utf-8'), 'utf-8') == '<div>'){
+            if (mb_substr($html, 0, mb_strlen('<div>', 'utf-8'), 'utf-8') == '<div>') {
                 $html = mb_substr($html, mb_strlen('<div>'), null, 'utf-8');
             }
-            if(mb_substr($html, mb_strlen($html, 'utf-8')-mb_strlen('</div>', 'utf-8'), mb_strlen('</div>'), 'utf-8')=='</div>'){
-                $html = mb_substr($html, 0, mb_strlen($html, 'utf-8')-mb_strlen('</div>', 'utf-8'), 'utf-8');
+            if (mb_substr($html, mb_strlen($html, 'utf-8') - mb_strlen('</div>', 'utf-8'), mb_strlen('</div>'), 'utf-8') == '</div>') {
+                $html = mb_substr($html, 0, mb_strlen($html, 'utf-8') - mb_strlen('</div>', 'utf-8'), 'utf-8');
             }
-        }while($inHtml != $html);
+        } while ($inHtml != $html);
 
         return $html;
     }
+
     function getHtml($html)
     {
         $ret = '';
-        if (!empty($html)){
+        if (!empty($html)) {
             $ret = '<div>' . $html . '</div>';
         }
         return $ret;
@@ -119,15 +123,17 @@ class Utility
 
         return $mValue;
     }
+
     private $defaultAttribute = [
         'color' => '#333',
         'text-align' => 'left',
     ];
+
     function getDefaultAttributeValue($key)
     {
         $ret = '';
-        foreach ($this->defaultAttribute as $k => $v){
-            if ($k == $key){
+        foreach ($this->defaultAttribute as $k => $v) {
+            if ($k == $key) {
                 $ret = $v;
             }
         }
@@ -147,25 +153,25 @@ class Utility
     {
         $children = $sourceItem->getChildren();
 
-        if (empty($baseItem)){
+        if (empty($baseItem)) {
             $baseItem = $sourceItem;
         }
         /**
          * @var Dom\HtmlNode $item
          */
-        foreach ($children as $item){
+        foreach ($children as $item) {
             $outHtml = $this->trimContent($item->outerHtml());
-            if (!empty($outHtml)){
+            if (!empty($outHtml)) {
                 $tag = strtolower($item->getTag()->name());
-                if ($tag == 'span'){
+                if ($tag == 'span') {
                     $aml['text']['markups'][] = Builder::Instance()->buildSpanMarkUp($item, $baseItem);
                 }
 
-                if ($tag == 'strong'){
+                if ($tag == 'strong') {
                     $aml['text']['markups'][] = Builder::Instance()->buildStrongMarkUp($item, $baseItem);
                 }
 
-                if ($tag == 'a'){
+                if ($tag == 'a') {
                     $aml[$tagFroA]['markups'][] = Builder::Instance()->buildAMarkup($item, $baseItem);
                 }
 
@@ -197,10 +203,10 @@ class Utility
         }
 
         $start = 0;
-        for ($index = 0; $index < count($pos); $index++){
+        for ($index = 0; $index < count($pos); $index++) {
             $len = $pos[$index] - $start;
             $text = $this->util_substr($content, $start, $len);
-            $aml['text']['markups'][] = Builder::Instance()->buildSentence($text, $start, $start+$len);
+            $aml['text']['markups'][] = Builder::Instance()->buildSentence($text, $start, $start + $len);
             $start = $pos[$index] + 1;
         }
     }
@@ -254,15 +260,15 @@ class Utility
         $children = $item->getChildren();
 
         $ret = [];
-        if (empty($children)){
+        if (empty($children)) {
             return $ret;
         }
         /**
          * @var Dom\HtmlNode $item
          */
-        foreach ($children as $item){
+        foreach ($children as $item) {
             $tagName = strtolower($item->getTag()->name());
-            if ($tagName == $tag){
+            if ($tagName == $tag) {
                 $ret[] = $item;
             }
         }
