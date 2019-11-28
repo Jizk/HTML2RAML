@@ -141,8 +141,9 @@ class Utility
      * @param Dom\HtmlNode $sourceItem
      * @param $aml
      * @param Dom\HtmlNode $baseItem
+     * @param $tagFroA
      */
-    function parseMarkUp($sourceItem, &$aml, $baseItem = null)
+    function parseMarkUp($sourceItem, &$aml, $baseItem = null, $tagFroA = 'text')
     {
         $children = $sourceItem->getChildren();
 
@@ -165,10 +166,10 @@ class Utility
                 }
 
                 if ($tag == 'a'){
-                    $aml['text']['markups'][] = Builder::Instance()->buildAMarkup($item, $baseItem);
+                    $aml[$tagFroA]['markups'][] = Builder::Instance()->buildAMarkup($item, $baseItem);
                 }
 
-                if (get_class($item) == 'PHPHtmlParser\Dom\InnerNode') {
+                if (get_class($item) == 'PHPHtmlParser\Dom\HtmlNode') {
                     $this->parseMarkUp($item, $aml, $sourceItem);
                 }
             }

@@ -42,11 +42,11 @@ class HtmlToRaml
     private function parserHtml($item)
     {
         $ret = [];
+        $children = $item->getChildren();
+
         /**
          * @var Dom\HtmlNode $item
          */
-        $children = $item->getChildren();
-
         foreach ($children as $item){
             $outerHtml = Utility::Instance()->trimContent($item->outerHtml());
             if (empty($outerHtml)){
@@ -55,7 +55,7 @@ class HtmlToRaml
             $tag = strtolower($item->getTag()->name());
             if (!empty($outerHtml)){
                 if ($tag == 'p'
-                    || $tag == 'image'
+                    || $tag == 'img'
                     || $tag == 'ul'
                     || in_array($tag, self::$hTagNameArray)
                     || $tag == 'video'
@@ -90,12 +90,29 @@ class HtmlToRaml
                             Utility::Instance()->parseMarkUp($item, $pAml);
                             $ret[] = $pAml;
                         }
-                    }elseif ($tag == 'image'){
+                    }elseif ($tag == 'img'){
                         $id = Utility::Instance()->getId($item);
                         $pAml = Builder::Instance()->buildImgNode($item, $id);
                         $ret[] = $pAml;
-                    }elseif (strpos($item->innerHtml(), 'image') !== false){
-                        $imgChildren = Utility::Instance()->getChildrenByTag($item, 'image');
+                    }elseif ($tag == 'video'){
+                        $id = Utility::Instance()->getId($item);
+                        $pAml = Builder::Instance()->buildVideoNode($item, $id);
+                        $ret[] = $pAml;
+                    }elseif (strpos($innerContent, "</a>") !== false){ // <p><a><img /></a></p> 不能在下面解析嵌套的img标签的判断之后，会出错
+                        $aChildren = Utility::Instance()->getChildrenByTag($item, 'a');
+                        foreach ($aChildren as $aChild){
+                            $imgChildren = Utility::Instance()->getChildrenByTag($aChild, 'img');
+                            if ($imgChildren){
+                                foreach ($imgChildren as $imgChild) {
+                                    $id = Utility::Instance()->getId($aChild);
+                                    $pAml = Builder::Instance()->buildImgNode($imgChild, $id);
+                                    Utility::Instance()->parseMarkUp($item, $pAml, '', 'image');
+                                    $ret[] = $pAml;
+                                }
+                            }
+                        }
+                    }elseif (strpos($innerContent, '<img') !== false){ // <p><img /></p>
+                        $imgChildren = Utility::Instance()->getChildrenByTag($item, 'img');
                         if ($imgChildren){
                             foreach ($imgChildren as $imgChild) {
                                 $id = Utility::Instance()->getId($item);
@@ -103,10 +120,6 @@ class HtmlToRaml
                                 $ret[] = $pAml;
                             }
                         }
-                    }elseif ($tag == 'video'){
-                        $id = Utility::Instance()->getId($item);
-                        $pAml = Builder::Instance()->buildVideoNode($item, $id);
-                        $ret[] = $pAml;
                     }
                 }
             }

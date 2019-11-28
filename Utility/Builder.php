@@ -239,7 +239,7 @@ class Builder
      */
     function buildAMarkup($item, $baseItem)
     {
-        $url = $item->getAttribute('src');
+        $url = $item->getAttribute('href');
         $width = $item->getAttribute('data-width');
         $height = $item->getAttribute('data-height');
         $pos = $this->getStartEnd($item, $baseItem);
