@@ -62,6 +62,11 @@ class Utility
         $item = str_replace('&nbsp;', '', $item);
         return trim(html_entity_decode($item));
     }
+    /**
+     * 清洗多级无用的div
+     * @param $html
+     * @return string
+     */
     function cleanHtml($html)
     {
         do{
@@ -80,21 +85,14 @@ class Utility
     function getHtml($html)
     {
         $ret = '';
-
         if (!empty($html)){
             $ret = '<div>' . $html . '</div>';
         }
-
         return $ret;
     }
 
-
-    private $defaultAttribute = [
-        'color' => '#333',
-        'text-align' => 'left',
-    ];
     /**
-     *
+     * 获取css样式
      * @param Dom\HtmlNode $item
      * @param $styleName
      * @return string
@@ -121,6 +119,10 @@ class Utility
 
         return $mValue;
     }
+    private $defaultAttribute = [
+        'color' => '#333',
+        'text-align' => 'left',
+    ];
     function getDefaultAttributeValue($key)
     {
         $ret = '';
@@ -134,6 +136,8 @@ class Utility
 
 
     /**
+     * 解析辅助标记
+     *
      * @param Dom\HtmlNode $sourceItem
      * @param $aml
      * @param Dom\HtmlNode $baseItem
@@ -170,8 +174,12 @@ class Utility
             }
         }
     }
+
     /**
+     * 解析句子格式
+     *
      * @param Dom\HtmlNode $item
+     * @param $aml
      */
     function parseSentence($item, &$aml)
     {
@@ -231,5 +239,33 @@ class Utility
     function util_strpos($str, $searchStr, $offset = 0)
     {
         return mb_strpos($str, $searchStr, $offset, 'utf-8');
+    }
+
+    /**
+     * 获取嵌套子标签
+     *
+     * @param Dom\HtmlNode $item
+     * @param $tag
+     * @return array
+     */
+    function getChildrenByTag($item, $tag)
+    {
+        $children = $item->getChildren();
+
+        $ret = [];
+        if (empty($children)){
+            return $ret;
+        }
+        /**
+         * @var Dom\HtmlNode $item
+         */
+        foreach ($children as $item){
+            $tagName = $item->getTag()->name();
+            if ($tagName == $tag){
+                $ret[] = $item;
+            }
+        }
+
+        return $ret;
     }
 }
