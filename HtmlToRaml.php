@@ -6,8 +6,11 @@ require './Utility/Builder.php';
 
 use PHPHtmlParser\Dom;
 
-class Demo
+class HtmlToRaml
 {
+    /**
+     * @throws \PHPHtmlParser\Exceptions\UnknownChildTypeException
+     */
     public function html2Raml()
     {
         $content = file_get_contents(__DIR__ . '/Test/demo2.html');
@@ -117,8 +120,8 @@ class Demo
 
 }
 
-$demo = new Demo();
+$h2r = new HtmlToRaml();
 //$demo->html2Raml();
-print_r($demo->html2Raml());
+print_r($h2r->html2Raml());
 
 
