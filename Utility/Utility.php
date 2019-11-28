@@ -37,7 +37,7 @@ class Utility
     {
         foreach ($html->find('*') as $item){
             if (empty($item->dataId)){
-                $item->predataId = self::$cnt++;
+                $item->dataId = self::$cnt++;
             }
 
             $this->addId($item);
@@ -49,7 +49,7 @@ class Utility
      */
     function getId($item)
     {
-        return strtolower($item->getAttribute('predataid'));
+        return strtolower($item->getAttribute('dataid'));
     }
 
     /**
@@ -158,6 +158,10 @@ class Utility
 
                 if ($tag == 'strong'){
                     $aml['text']['markups'][] = Builder::Instance()->buildStrongMarkUp($item, $baseItem);
+                }
+
+                if ($tag == 'a'){
+                    $aml['text']['markups'][] = Builder::Instance()->buildAMarkup($item, $baseItem);
                 }
 
                 if (get_class($item) == 'PHPHtmlParser\Dom\InnerNode') {

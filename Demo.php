@@ -52,7 +52,7 @@ class Demo
             $tag = strtolower($item->getTag()->name());
             if (!empty($outerHtml)){
                 if ($tag == 'p'
-                    || $tag == 'img'
+                    || $tag == 'image'
                     || $tag == 'ul'
                     || in_array($tag, self::$hTagNameArray)){
                     $innerContent = $item->innerHtml();
@@ -74,10 +74,11 @@ class Demo
                             Utility::Instance()->parseMarkUp($item, $pAml);
                             $ret[] = $pAml;
                         }
-                    }elseif ($tag == 'img'){
-                        $ret[] = [];
-
-                    }elseif (strpos($item->innerHtml(), 'img') !== false){ // <p><img></img></p>
+                    }elseif ($tag == 'image'){
+                        $id = Utility::Instance()->getId($item);
+                        $pAml = Builder::Instance()->buildImgNode($item, $id);
+                        $ret[] = $pAml;
+                    }elseif (strpos($item->innerHtml(), 'image') !== false){ // <p><img></img></p>
                         $ret[] = [];
 
                     }elseif ($tag == 'video'){

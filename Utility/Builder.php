@@ -125,4 +125,65 @@ class Builder
             'end' => $end,
         ];
     }
+
+    /**
+     * @param Dom\HtmlNode $item
+     */
+    function buildImgNode($item, $id)
+    {
+        $url = $item->getAttribute('src');
+        $width = $item->getAttribute('data-width');
+        $height = $item->getAttribute('data-height');
+
+        $ret = [
+            'id' => $id,
+            'type' => 1,
+            'image' => [
+                'source' => $url,
+            ]
+        ];
+
+        if (!empty($width)){
+            $ret['image']['width'] = $width;
+        }
+
+        if (!empty($height)){
+            $ret['image']['height'] = $height;
+        }
+
+        return $ret;
+    }
+
+    /**
+     * @param Dom\HtmlNode $item
+     * @param Dom\HtmlNode $baseItem
+     */
+
+    function buildAMarkup($item, $baseItem)
+    {
+        $url = $item->getAttribute('src');
+        $width = $item->getAttribute('data-width');
+        $height = $item->getAttribute('data-height');
+        $pos = $this->getStartEnd($item, $baseItem);
+
+        if (!empty($url)){
+            $markups = [
+                'tag' => 'a',
+                'start' => $pos['start'],
+                'end' => $pos['end'],
+                'source' => $url,
+            ];
+
+            if (!empty($width)){
+                $markups['width'] = $width;
+            }
+
+            if (!empty($height)){
+                $markups['height'] = $height;
+            }
+            return $markups;
+        }else{
+            return [];
+        }
+    }
 }
