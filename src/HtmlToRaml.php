@@ -1,6 +1,12 @@
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../Utility/Utility.php';
+require __DIR__ . '/Build/BuildMarkups.php';
+require __DIR__ . '/Build/BuildText.php';
+require __DIR__ . '/Build/BuildImg.php';
+require __DIR__ . '/Build/BuildVideo.php';
+
 use PHPHtmlParser\Dom;
 use src\Build\BuildText\BuildText;
 use src\Build\BuildImg\BuildImg;
@@ -14,7 +20,7 @@ class HtmlToRaml
      */
     public function html2Raml()
     {
-        $content = file_get_contents(__DIR__ . '/Test/demo2.html');
+        $content = file_get_contents(__DIR__ . '/../Test/demo3.html');
 //        $content = $this->cleanHtml($content);
 //        $content = $this->getHtml($content);
         $content = "<body>" . $content . "</body>";

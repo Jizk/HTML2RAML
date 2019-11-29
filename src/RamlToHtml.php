@@ -1,9 +1,10 @@
 <?php
 
-use src\Build\BuildText\BuildText;
-use src\Build\BuildImg\BuildImg;
-use src\Build\BuildVideo\BuildVideo;
-use Utility\Utility\Utility;
+require __DIR__ . '/../Utility/Utility.php';
+require __DIR__ . '/Build/BuildMarkups.php';
+require __DIR__ . '/Build/BuildText.php';
+require __DIR__ . '/Build/BuildImg.php';
+require __DIR__ . '/Build/BuildVideo.php';
 
 class RamlToHtml
 {
