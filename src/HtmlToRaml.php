@@ -11,7 +11,7 @@ use PHPHtmlParser\Dom;
 use HTML2RAML\Build\BuildText;
 use HTML2RAML\Build\BuildImg;
 use HTML2RAML\Build\BuildVideo;
-use Utility\Utility\Utility;
+use Utility\Utility;
 
 class HtmlToRaml
 {

@@ -6,7 +6,7 @@
  * Time: 16:52
  */
 
-namespace Utility\Utility;
+namespace Utility;
 
 require __DIR__ . '/simple_html_dom.php';
 use PHPHtmlParser\Dom;
