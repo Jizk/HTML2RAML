@@ -9,7 +9,7 @@
 namespace HTML2RAMl\Build;
 
 use PHPHtmlParser\Dom;
-use Utility\Utility\Utility;
+use Utility\Utility;
 
 class BuildMarkups
 {
