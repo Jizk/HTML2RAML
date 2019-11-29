@@ -6,9 +6,11 @@
  * Time: 16:52
  */
 
-require __DIR__ . '/simple_html_dom.php';
+namespace Utility\Utility;
 
+require __DIR__ . '/simple_html_dom.php';
 use PHPHtmlParser\Dom;
+use src\Build\BuildMarkups\BuildMarkups;
 
 class Utility
 {
@@ -27,14 +29,14 @@ class Utility
         return self::$instance[$class];
     }
 
-    function html2Str($shtml)
+    public function html2Str($shtml)
     {
         $html = str_get_html($shtml);
         $this->addId($html);
         return strval($html);
     }
 
-    function addId(&$html)
+    private function addId(&$html)
     {
         foreach ($html->find('*') as $item) {
             if (empty($item->dataId)) {
@@ -49,7 +51,7 @@ class Utility
      * @param Dom\HtmlNode $item
      * @return string
      */
-    function getId($item)
+    public function getId($item)
     {
         return strtolower($item->getAttribute('dataid'));
     }
@@ -59,7 +61,7 @@ class Utility
      * @param $item
      * @return string
      */
-    function trimContent($item)
+    public function trimContent($item)
     {
         $item = str_replace('&nbsp;', '', $item);
         return trim(html_entity_decode($item));
@@ -70,7 +72,7 @@ class Utility
      * @param $html
      * @return string
      */
-    function cleanHtml($html)
+    public function cleanHtml($html)
     {
         do {
             $html = trim($html);
@@ -86,7 +88,7 @@ class Utility
         return $html;
     }
 
-    function getHtml($html)
+    public function getHtml($html)
     {
         $ret = '';
         if (!empty($html)) {
@@ -101,7 +103,7 @@ class Utility
      * @param $styleName
      * @return string
      */
-    function getCssValueFromItem($item, $styleName)
+    public function getCssValueFromItem($item, $styleName)
     {
         $styleStr = strtolower($item->getAttribute('style'));
         $styleName = strtolower($styleName);
@@ -129,7 +131,7 @@ class Utility
         'text-align' => 'left',
     ];
 
-    function getDefaultAttributeValue($key)
+    private function getDefaultAttributeValue($key)
     {
         $ret = '';
         foreach ($this->defaultAttribute as $k => $v) {
@@ -149,7 +151,7 @@ class Utility
      * @param Dom\HtmlNode $baseItem
      * @param $tagFroA
      */
-    function parseMarkUp($sourceItem, &$aml, $baseItem = null, $tagFroA = 'text')
+    public function parseMarkUp($sourceItem, &$aml, $baseItem = null, $tagFroA = 'text')
     {
         $children = $sourceItem->getChildren();
 
@@ -164,15 +166,15 @@ class Utility
             if (!empty($outHtml)) {
                 $tag = strtolower($item->getTag()->name());
                 if ($tag == 'span') {
-                    $aml['text']['markups'][] = Builder::Instance()->buildSpanMarkUp($item, $baseItem);
+                    $aml['text']['markups'][] = BuildMarkups::Instance()->buildSpanMarkUp($item, $baseItem);
                 }
 
                 if ($tag == 'strong') {
-                    $aml['text']['markups'][] = Builder::Instance()->buildStrongMarkUp($item, $baseItem);
+                    $aml['text']['markups'][] = BuildMarkups::Instance()->buildStrongMarkUp($item, $baseItem);
                 }
 
                 if ($tag == 'a') {
-                    $aml[$tagFroA]['markups'][] = Builder::Instance()->buildAMarkup($item, $baseItem);
+                    $aml[$tagFroA]['markups'][] = BuildMarkups::Instance()->buildAMarkup($item, $baseItem);
                 }
 
                 if (get_class($item) == 'PHPHtmlParser\Dom\HtmlNode') {
@@ -188,7 +190,7 @@ class Utility
      * @param Dom\HtmlNode $item
      * @param $aml
      */
-    function parseSentence($item, &$aml)
+    public function parseSentence($item, &$aml)
     {
         $content = $this->trimContent(strip_tags($item->outerHtml()));
 
@@ -206,7 +208,7 @@ class Utility
         for ($index = 0; $index < count($pos); $index++) {
             $len = $pos[$index] - $start;
             $text = $this->util_substr($content, $start, $len);
-            $aml['text']['markups'][] = Builder::Instance()->buildSentence($text, $start, $start + $len);
+            $aml['text']['markups'][] = BuildMarkups::Instance()->buildSentenceMarkUp($text, $start, $start + $len);
             $start = $pos[$index] + 1;
         }
     }
@@ -219,7 +221,7 @@ class Utility
      * @param int $len
      * @return string
      */
-    function util_substr($base, $start, $len = 0)
+    public function util_substr($base, $start, $len = 0)
     {
         return mb_substr($base, $start, $len, 'utf-8');
     }
@@ -230,7 +232,7 @@ class Utility
      * @param $str
      * @return int
      */
-    function util_strlen($str)
+    public function util_strlen($str)
     {
         return mb_strlen($str, 'utf-8');
     }
@@ -243,7 +245,7 @@ class Utility
      * @param int $offset
      * @return bool|false|int
      */
-    function util_strpos($str, $searchStr, $offset = 0)
+    public function util_strpos($str, $searchStr, $offset = 0)
     {
         return mb_strpos($str, $searchStr, $offset, 'utf-8');
     }
@@ -255,7 +257,7 @@ class Utility
      * @param $tag
      * @return array
      */
-    function getChildrenByTag($item, $tag)
+    public function getChildrenByTag($item, $tag)
     {
         $children = $item->getChildren();
 

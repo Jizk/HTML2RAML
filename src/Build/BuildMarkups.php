@@ -2,18 +2,21 @@
 /**
  * Created by PhpStorm.
  * User: jizhongkai
- * Date: 2019/11/26
- * Time: 16:14
+ * Date: 2019/11/29
+ * Time: 14:55
  */
 
-use PHPHtmlParser\Dom;
+namespace src\Build\BuildMarkups;
 
-class Builder
+use PHPHtmlParser\Dom;
+use Utility\Utility\Utility;
+
+class BuildMarkups
 {
     private static $instance;
 
     /**
-     * @return Builder
+     * @return BuildMarkups
      */
     public static function Instance()
     {
@@ -22,119 +25,6 @@ class Builder
             self::$instance[$class] = new $class();
         }
         return self::$instance[$class];
-    }
-
-    /**
-     * 文本段落
-     * @param $text
-     * @param string $lineType
-     * @param string $align
-     * @param $id
-     * @return array
-     */
-    function buildTextNode($text, $lineType = '', $align = '', $id)
-    {
-        $ret = [
-            'id' => $id,
-            'type' => 0,
-            'text' => [
-                'text' => $text,
-            ]
-        ];
-
-        if (!empty($lineType)) {
-            $ret['text']['linetype'] = $lineType;
-        }
-
-        if (!empty($align)) {
-            $ret['text']['align'] = $align;
-        }
-
-        return $ret;
-    }
-
-    /**
-     * image图片
-     * @param Dom\HtmlNode $item
-     * @param $id
-     * @return array
-     */
-    function buildImgNode($item, $id)
-    {
-        $url = $item->getAttribute('src');
-        $width = $item->getAttribute('data-width');
-        $height = $item->getAttribute('data-height');
-
-        $ret = [
-            'id' => $id,
-            'type' => 1,
-            'image' => [
-                'source' => $url,
-            ]
-        ];
-
-        if (!empty($width)) {
-            $ret['image']['width'] = $width;
-        }
-
-        if (!empty($height)) {
-            $ret['image']['height'] = $height;
-        }
-
-        return $ret;
-    }
-
-    /**
-     * video 视频
-     * @param Dom\HtmlNode $item
-     * @param $id
-     * @return array
-     */
-    function buildVideoNode($item, $id)
-    {
-        $url = $item->getAttribute('src');
-        $cover = $item->getAttribute('controls poster');
-
-        $ret = [
-            'id' => $id,
-            'type' => 2,
-            'media' => [
-                'source' => $url
-            ],
-        ];
-
-        if (!empty($cover)) {
-            $ret['media']['cover'] = $cover;
-        }
-
-        return $ret;
-    }
-
-    /**
-     * li 排版
-     * @param $text
-     * @param $id
-     * @param $order
-     * @return array
-     */
-
-    function buildLiNode($text, $id, $order)
-    {
-        $ret = [
-            'id' => $id,
-            'type' => 0,
-            'text' => [
-                'text' => $text
-            ],
-            'li' => [
-                'type' => 'ul',
-                'level' => 1,
-                'order' => $order,
-            ],
-            'blockquote' => 0,
-        ];
-
-        return $ret;
     }
 
     /**
@@ -167,7 +57,7 @@ class Builder
      * @param Dom\HtmlNode $baseItem
      * @return array
      */
-    function buildSpanMarkUp($item, $baseItem)
+    public function buildSpanMarkUp($item, $baseItem)
     {
         $text = Utility::Instance()->trimContent(strip_tags($item->innerHtml()));
         $color = Utility::Instance()->getCssValueFromItem($item, 'color');
@@ -193,7 +83,7 @@ class Builder
      * @param Dom\HtmlNode $baseItem
      * @return array
      */
-    function buildStrongMarkUp($item, $baseItem)
+    public function buildStrongMarkUp($item, $baseItem)
     {
         $text = Utility::Instance()->trimContent(strip_tags($item->innerHtml()));
         $pos = $this->getStartEnd($item, $baseItem);
@@ -217,7 +107,7 @@ class Builder
      * @param $end
      * @return array
      */
-    function buildSentence($text, $start, $end)
+    public function buildSentenceMarkUp($text, $start, $end)
     {
         if (!empty($text)) {
             $markUp = [
@@ -237,7 +127,7 @@ class Builder
      * @param Dom\HtmlNode $baseItem
      * @return array
      */
-    function buildAMarkup($item, $baseItem)
+    public function buildAMarkup($item, $baseItem)
     {
         $url = $item->getAttribute('href');
         $width = $item->getAttribute('data-width');

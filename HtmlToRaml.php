@@ -1,10 +1,11 @@
 <?php
 
 require 'vendor/autoload.php';
-require './Utility/Utility.php';
-require './Utility/Builder.php';
-
 use PHPHtmlParser\Dom;
+use src\Build\BuildText\BuildText;
+use src\Build\BuildImg\BuildImg;
+use src\Build\BuildVideo\BuildVideo;
+use Utility\Utility\Utility;
 
 class HtmlToRaml
 {
@@ -66,9 +67,9 @@ class HtmlToRaml
                         if ($tag == 'p') {
                             $align = Utility::Instance()->getCssValueFromItem($item, 'text\-align');
                             $id = Utility::Instance()->getId($item);
-                            $pAml = Builder::Instance()->buildTextNode($sourceContent, '', $align, $id);
+                            $pAml = BuildText::Instance()->buildTextNode($sourceContent, '', $align, $id);
                             Utility::Instance()->parseMarkUp($item, $pAml);
-//                            Utility::Instance()->parseSentence($item, $pAml);
+                            Utility::Instance()->parseSentence($item, $pAml);
                             $ret[] = $pAml;
                         } elseif ($tag == 'ul') {
                             $ulChildren = Utility::Instance()->getChildrenByTag($item, 'li');
@@ -79,24 +80,24 @@ class HtmlToRaml
                             foreach ($ulChildren as $child) {
                                 $id = Utility::Instance()->getId($child);
                                 $childrenItem = Utility::Instance()->trimContent(strip_tags($child->innerHtml()));
-                                $pAml = Builder::Instance()->buildLiNode($childrenItem, $id, ++$order);
+                                $pAml = BuildText::Instance()->buildLiNode($childrenItem, $id, ++$order);
                                 Utility::Instance()->parseMarkUp($child, $pAml);
                                 $ret[] = $pAml;
                             }
                         } elseif (in_array($tag, self::$hTagNameArray)) {
                             $align = Utility::Instance()->getCssValueFromItem($item, 'text\-align');
                             $id = Utility::Instance()->getId($item);
-                            $pAml = Builder::Instance()->buildTextNode($sourceContent, $tag, $align, $id);
+                            $pAml = BuildText::Instance()->buildTextNode($sourceContent, $tag, $align, $id);
                             Utility::Instance()->parseMarkUp($item, $pAml);
                             $ret[] = $pAml;
                         }
                     } elseif ($tag == 'img') {
                         $id = Utility::Instance()->getId($item);
-                        $pAml = Builder::Instance()->buildImgNode($item, $id);
+                        $pAml = BuildImg::Instance()->buildImgNode($item, $id);
                         $ret[] = $pAml;
                     } elseif ($tag == 'video') {
                         $id = Utility::Instance()->getId($item);
-                        $pAml = Builder::Instance()->buildVideoNode($item, $id);
+                        $pAml = BuildVideo::Instance()->buildVideoNode($item, $id);
                         $ret[] = $pAml;
                     } elseif (strpos($innerContent, "</a>") !== false) { // <p><a><img /></a></p> 不能在下面解析嵌套的img标签的判断之后，会出错
                         $aChildren = Utility::Instance()->getChildrenByTag($item, 'a');
@@ -105,7 +106,7 @@ class HtmlToRaml
                             if ($imgChildren) {
                                 foreach ($imgChildren as $imgChild) {
                                     $id = Utility::Instance()->getId($aChild);
-                                    $pAml = Builder::Instance()->buildImgNode($imgChild, $id);
+                                    $pAml = BuildImg::Instance()->buildImgNode($imgChild, $id);
                                     Utility::Instance()->parseMarkUp($item, $pAml, '', 'image');
                                     $ret[] = $pAml;
                                 }
@@ -116,7 +117,7 @@ class HtmlToRaml
                         if ($imgChildren) {
                             foreach ($imgChildren as $imgChild) {
                                 $id = Utility::Instance()->getId($item);
-                                $pAml = Builder::Instance()->buildImgNode($imgChild, $id);
+                                $pAml = BuildImg::Instance()->buildImgNode($imgChild, $id);
                                 $ret[] = $pAml;
                             }
                         }
