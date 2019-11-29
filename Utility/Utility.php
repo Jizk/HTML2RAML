@@ -10,7 +10,7 @@ namespace Utility\Utility;
 
 require __DIR__ . '/simple_html_dom.php';
 use PHPHtmlParser\Dom;
-use src\Build\BuildMarkups\BuildMarkups;
+use HTML2RAML\Build\BuildMarkups;
 
 class Utility
 {

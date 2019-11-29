@@ -6,7 +6,7 @@
  * Time: 14:55
  */
 
-namespace src\Build\BuildMarkups;
+namespace HTML2RAMl\Build;
 
 use PHPHtmlParser\Dom;
 use Utility\Utility\Utility;

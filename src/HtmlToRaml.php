@@ -8,9 +8,9 @@ require __DIR__ . '/Build/BuildImg.php';
 require __DIR__ . '/Build/BuildVideo.php';
 
 use PHPHtmlParser\Dom;
-use src\Build\BuildText\BuildText;
-use src\Build\BuildImg\BuildImg;
-use src\Build\BuildVideo\BuildVideo;
+use HTML2RAML\Build\BuildText;
+use HTML2RAML\Build\BuildImg;
+use HTML2RAML\Build\BuildVideo;
 use Utility\Utility\Utility;
 
 class HtmlToRaml
@@ -35,7 +35,8 @@ class HtmlToRaml
             $root = $dom->root->firstChild()->getChildren()[1];
         }
 
-        return $this->parserHtml($root);
+        $ret =  $this->parserHtml($root);
+        print_r($ret);
     }
 
     private static $hTagNameArray = ['h1', 'h2', 'h3'];
@@ -140,7 +141,6 @@ class HtmlToRaml
 }
 
 $h2r = new HtmlToRaml();
-//$demo->html2Raml();
-print_r($h2r->html2Raml());
+$h2r->html2Raml();
 
 

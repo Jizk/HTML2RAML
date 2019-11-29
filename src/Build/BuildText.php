@@ -6,7 +6,7 @@
  * Time: 14:54
  */
 
-namespace src\Build\BuildText;
+namespace HTML2RAMl\Build;
 
 use PHPHtmlParser\Dom;
 
