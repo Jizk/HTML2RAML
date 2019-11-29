@@ -1,6 +1,6 @@
 <?php
 
-require 'vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 use PHPHtmlParser\Dom;
 use src\Build\BuildText\BuildText;
 use src\Build\BuildImg\BuildImg;
