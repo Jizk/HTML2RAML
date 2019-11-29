@@ -9,6 +9,7 @@
 namespace Utility;
 
 require __DIR__ . '/simple_html_dom.php';
+
 use PHPHtmlParser\Dom;
 use HTML2RAML\Build\BuildMarkups;
 

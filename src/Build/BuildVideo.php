@@ -59,11 +59,11 @@ class BuildVideo
      */
     function buildVideoHtml($videoItem)
     {
-        if (!empty($videoItem->id)){
+        if (!empty($videoItem->id)) {
             $attrs = " dataid='{$videoItem->id}'";
         }
 
-        if (!empty($videoItem->media->cover)){
+        if (!empty($videoItem->media->cover)) {
             $attrs = " controls poster='{$videoItem->media->cover}'";
         }
 

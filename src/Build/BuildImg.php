@@ -65,15 +65,15 @@ class BuildImg
      */
     function buildImgHtml($imgItem)
     {
-        if (!empty($imgItem->id)){
+        if (!empty($imgItem->id)) {
             $attrs = " dataid='{$imgItem->id}'";
         }
 
-        if (!empty($imgItem->image->width)){
+        if (!empty($imgItem->image->width)) {
             $attrs = " data-width='{$imgItem->image->width}'";
         }
 
-        if (!empty($imgItem->image->height)){
+        if (!empty($imgItem->image->height)) {
             $attrs = " data-height='{$imgItem->image->height}'";
         }
 

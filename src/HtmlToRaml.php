@@ -35,7 +35,7 @@ class HtmlToRaml
             $root = $dom->root->firstChild()->getChildren()[1];
         }
 
-        $ret =  $this->parserHtml($root);
+        $ret = $this->parserHtml($root);
         print_r($ret);
     }
 
