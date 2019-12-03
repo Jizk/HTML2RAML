@@ -70,11 +70,11 @@ class BuildImg
         }
 
         if (!empty($imgItem->image->width)) {
-            $attrs = " data-width='{$imgItem->image->width}'";
+            $attrs .= " data-width='{$imgItem->image->width}'";
         }
 
         if (!empty($imgItem->image->height)) {
-            $attrs = " data-height='{$imgItem->image->height}'";
+            $attrs .= " data-height='{$imgItem->image->height}'";
         }
 
         return "<img {$attrs} src='{$imgItem->image->source}'/>";

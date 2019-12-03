@@ -69,6 +69,7 @@ class BuildMarkups
                 'value' => $color,
                 'start' => $pos['start'],
                 'end' => $pos['end'],
+                'text' => $text,
             ];
 
             return $markUp;
@@ -93,6 +94,7 @@ class BuildMarkups
                 'tag' => 'strong',
                 'start' => $pos['start'],
                 'end' => $pos['end'],
+                'text' => $text
             ];
             return $markUp;
         } else {
@@ -114,6 +116,7 @@ class BuildMarkups
                 'tag' => 'sentence',
                 'start' => $start,
                 'end' => $end,
+                'text' => $text
             ];
             return $markUp;
         } else {
@@ -129,6 +132,7 @@ class BuildMarkups
      */
     public function buildAMarkup($item, $baseItem)
     {
+        $text = Utility::Instance()->trimContent(strip_tags($item->innerHtml()));
         $url = $item->getAttribute('href');
         $width = $item->getAttribute('data-width');
         $height = $item->getAttribute('data-height');
@@ -140,6 +144,7 @@ class BuildMarkups
                 'start' => $pos['start'],
                 'end' => $pos['end'],
                 'source' => $url,
+                'text' => $text
             ];
 
             if (!empty($width)) {
@@ -153,5 +158,17 @@ class BuildMarkups
         } else {
             return [];
         }
+    }
+
+    /**
+     * 拼接属性标签
+     * @param $item
+     * @param $tagName
+     * @param $attrs
+     * @return string
+     */
+    public function buildTag($item, $tagName, $attrs)
+    {
+        return "<$tagName $attrs>" . $item . "</$tagName>";
     }
 }

@@ -9,6 +9,7 @@
 namespace HTML2RAMl\Build;
 
 use PHPHtmlParser\Dom;
+use Utility\Utility;
 
 class BuildText
 {
@@ -82,4 +83,22 @@ class BuildText
         return $ret;
     }
 
+    /**
+     * Li Html
+     * @param $item
+     * @return string
+     */
+    public function buildLiHtml($item)
+    {
+        if (!empty($item->text->markups)) {
+            $segement = Utility::Instance()->reParseMarkup($item, $item->text->text);
+        } else {
+            $segement = $item->text->text;
+        }
+        if (!empty($item->id)) {
+            $attrs = "dataid={$item->id}";
+        }
+
+        return "<ul><li {$attrs}>" . $segement . "</li></ul>";
+    }
 }

@@ -222,7 +222,7 @@ class Utility
      * @param int $len
      * @return string
      */
-    public function util_substr($base, $start, $len = 0)
+    public function util_substr($base, $start, $len = null)
     {
         return mb_substr($base, $start, $len, 'utf-8');
     }
@@ -277,5 +277,64 @@ class Utility
         }
 
         return $ret;
+    }
+
+    /**
+     * 反解析辅助标记
+     *
+     * @param $item
+     * @param $text
+     * @return string
+     */
+    public function reParseMarkup($item, $text)
+    {
+        $markups = $item->text->markups;
+        // 按start倒序
+        usort($markups, function ($one, $two) {
+            if ($one->start == $two->start) {
+                return $two->end - $one->end;
+            }
+            return $two->start - $one->start;
+        });
+
+        $currentText = $text;
+        for ($index = 0; $index < sizeof($markups); $index++) {
+            $markupItem = $markups[$index];
+
+            if ($markupItem->tag == 'span') {
+                if (!empty($markupItem->value)) {
+                    $attrs = "style=color:" . $markupItem->value;
+                }
+                $currentText = $this->insertMarkTag($markupItem, $currentText, 'span', $attrs);
+            }
+            if ($markupItem->tag == 'strong') {
+                $currentText = $this->insertMarkTag($markupItem, $currentText, 'strong', '');
+
+            }
+            if ($markupItem->tag == 'a') {
+                $attrs = "href=" . $markupItem->source;
+                $currentText = $this->insertMarkTag($markupItem, $currentText, 'a', $attrs);
+            }
+        }
+        return $currentText;
+    }
+
+    /**
+     * 生成一个Html标记
+     * @param $markup
+     * @param $text
+     * @param $tagName
+     * @param $attrs
+     * @return string
+     */
+    private function insertMarkTag($markup, $text, $tagName, $attrs)
+    {
+        $markStart = $this->util_strpos($text, $markup->text, $markup->start);
+        $markEnd = $this->util_strlen($markup->text) + $markStart;
+
+        $before = $this->util_substr($text, 0, $markStart);
+        $after = $this->util_substr($text, $markEnd);
+
+        return $before . "<$tagName $attrs>" . $markup->text . "</$tagName>" . $after;
     }
 }

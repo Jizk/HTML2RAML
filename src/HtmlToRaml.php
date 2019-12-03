@@ -20,7 +20,7 @@ class HtmlToRaml
      */
     public function html2Raml()
     {
-        $content = file_get_contents(__DIR__ . '/../Test/demo3.html');
+        $content = file_get_contents(__DIR__ . '/../Test/demo2.html');
 //        $content = $this->cleanHtml($content);
 //        $content = $this->getHtml($content);
         $content = "<body>" . $content . "</body>";
@@ -36,7 +36,7 @@ class HtmlToRaml
         }
 
         $ret = $this->parserHtml($root);
-        print_r($ret);
+        print_r(json_encode($ret, 256));
     }
 
     private static $hTagNameArray = ['h1', 'h2', 'h3'];
@@ -72,7 +72,7 @@ class HtmlToRaml
                     $sourceContent = Utility::Instance()->trimContent(strip_tags($innerContent));
                     if (!empty($sourceContent)) {
                         if ($tag == 'p') {
-                            $align = Utility::Instance()->getCssValueFromItem($item, 'text\-align');
+                            $align = Utility::Instance()->getCssValueFromItem($item, 'text-align');
                             $id = Utility::Instance()->getId($item);
                             $pAml = BuildText::Instance()->buildTextNode($sourceContent, '', $align, $id);
                             Utility::Instance()->parseMarkUp($item, $pAml);
@@ -92,7 +92,7 @@ class HtmlToRaml
                                 $ret[] = $pAml;
                             }
                         } elseif (in_array($tag, self::$hTagNameArray)) {
-                            $align = Utility::Instance()->getCssValueFromItem($item, 'text\-align');
+                            $align = Utility::Instance()->getCssValueFromItem($item, 'text-align');
                             $id = Utility::Instance()->getId($item);
                             $pAml = BuildText::Instance()->buildTextNode($sourceContent, $tag, $align, $id);
                             Utility::Instance()->parseMarkUp($item, $pAml);
