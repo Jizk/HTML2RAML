@@ -134,7 +134,6 @@ class HtmlToRaml
         }
 
         return $ret;
-//        return json_encode($ret, 256);
     }
 
 
