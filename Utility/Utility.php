@@ -40,8 +40,8 @@ class Utility
     private function addId(&$html)
     {
         foreach ($html->find('*') as $item) {
-            if (empty($item->dataId)) {
-                $item->dataId = self::$cnt++;
+            if (empty($item->dataid)) {
+                $item->dataid = self::$cnt++;
             }
 
             $this->addId($item);
@@ -207,7 +207,7 @@ class Utility
 
         $start = 0;
         for ($index = 0; $index < count($pos); $index++) {
-            $len = $pos[$index] - $start;
+            $len = $pos[$index] - $start + 1;
             $text = $this->util_substr($content, $start, $len);
             $aml['text']['markups'][] = BuildMarkups::Instance()->buildSentenceMarkUp($text, $start, $start + $len);
             $start = $pos[$index] + 1;
