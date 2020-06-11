@@ -66,3 +66,8 @@ RAML每个List元素，包含一系列的Key，这些Key主要分为段落内容
 - 11.29.19 整理目录级别，拆分标签Build
 - 11.29.19 开始解析RAML2HTML
 - 12.3.19 实现上述标签RAML2HTML解析，搭建基础架构，后期方便扩展
+- 6.11.20 对接业务中，准备投放到项目中
+
+# PS
+可本地测试（搭建PHP，注意PHP版本），该项目选用simple_html_dom.php抓取解析html标签，PHP7.1以下使用正常，PHP7.4会报preg_match_all(): Compilation failed: invalid range in character class at offset 4一类错误，原因是PHP7.4的正则匹配规则(例：[\w-]+)匹配组内横杠边界会报错，可以改成（例：[\w\-]+），或更换不受版本限制的php抓取html标签方法。
+
