@@ -72,7 +72,8 @@ class HtmlToRaml
                     $sourceContent = Utility::Instance()->trimContent(strip_tags($innerContent));
                     if (!empty($sourceContent)) {
                         if ($tag == 'p') {
-                            $align = Utility::Instance()->getCssValueFromItem($item, 'text-align');
+//                            $align = Utility::Instance()->getCssValueFromItem($item, 'text-align');
+                            $align = '';
                             $id = Utility::Instance()->getId($item);
                             $pAml = BuildText::Instance()->buildTextNode($sourceContent, '', $align, $id);
                             Utility::Instance()->parseMarkUp($item, $pAml);
@@ -92,7 +93,8 @@ class HtmlToRaml
                                 $ret[] = $pAml;
                             }
                         } elseif (in_array($tag, self::$hTagNameArray)) {
-                            $align = Utility::Instance()->getCssValueFromItem($item, 'text-align');
+//                            $align = Utility::Instance()->getCssValueFromItem($item, 'text-align');
+                            $align = '';
                             $id = Utility::Instance()->getId($item);
                             $pAml = BuildText::Instance()->buildTextNode($sourceContent, $tag, $align, $id);
                             Utility::Instance()->parseMarkUp($item, $pAml);

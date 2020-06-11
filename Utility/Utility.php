@@ -102,26 +102,26 @@ class Utility
      * 获取css样式
      * @param Dom\HtmlNode $item
      * @param $styleName
-     * @return string
+     * @return array
      */
-    public function getCssValueFromItem($item, $styleName)
+    public function getCssValueFromItem($item, array $styleName = ['color', 'text-decoration']) // 颜色 划线
     {
         $styleStr = strtolower($item->getAttribute('style'));
-        $styleName = strtolower($styleName);
 
         $cssArray = explode(";", $styleStr);
 
-        $mValue = '';
+        $mValue = [];
         foreach ($cssArray as $cssItem) {
             $cssItemArray = explode(":", $cssItem);
-            if (sizeof($cssItemArray) > 1) {
-                if (strtolower($cssItemArray[0]) == $styleName) {
-                    $mValue = trim($cssItemArray[1]);
+            if (count($cssItemArray) > 1) {
+                if (in_array(strtolower(trim($cssItemArray[0])), $styleName)) {
+                    $mValue[strtolower(trim($cssItemArray[0]))] = trim($cssItemArray[1]);
                 }
             }
         }
-        if ($mValue == 'null' || empty($mValue)) {//兼容null值，第一次知道还有null值
-            $mValue = $this->getDefaultAttributeValue($styleName);
+        if (empty($mValue)) {//兼容null值，第一次知道还有null值
+//            $mValue = $this->getDefaultAttributeValue($styleName);
+            $mValue = $this->defaultAttribute;
         }
 
         return $mValue;
@@ -129,7 +129,6 @@ class Utility
 
     private $defaultAttribute = [
         'color' => '#333',
-        'text-align' => 'left',
     ];
 
     private function getDefaultAttributeValue($key)
@@ -167,7 +166,12 @@ class Utility
             if (!empty($outHtml)) {
                 $tag = strtolower($item->getTag()->name());
                 if ($tag == 'span') {
-                    $aml['text']['markups'][] = BuildMarkups::Instance()->buildSpanMarkUp($item, $baseItem);
+                    $spanMarkUps = BuildMarkups::Instance()->buildSpanMarkUp($item, $baseItem);
+                    if (!empty($spanMarkUps)){
+                        foreach ($spanMarkUps as $spanMarkUp){
+                            $aml['text']['markups'][] = $spanMarkUp;
+                        }
+                    }
                 }
 
                 if ($tag == 'strong') {
@@ -178,6 +182,9 @@ class Utility
                     $aml[$tagFroA]['markups'][] = BuildMarkups::Instance()->buildAMarkup($item, $baseItem);
                 }
 
+                if ($tag == 'em'){
+                    $aml['text']['markups'][] = BuildMarkups::Instance()->buildEmMarkup($item, $baseItem);
+                }
                 if (get_class($item) == 'PHPHtmlParser\Dom\HtmlNode') {
                     $this->parseMarkUp($item, $aml, $sourceItem);
                 }
@@ -298,14 +305,28 @@ class Utility
         });
 
         $currentText = $text;
+        $style = '';
         for ($index = 0; $index < sizeof($markups); $index++) {
             $markupItem = $markups[$index];
 
             if ($markupItem->tag == 'span') {
-                if (!empty($markupItem->value)) {
-                    $attrs = "style=color:" . $markupItem->value;
+                if ($markupItem->value  && empty($style)) {
+                    $style .= "{$markupItem->css}:{$markupItem->value};";
                 }
+                // 拼接多级span style样式
+                if ($index + 1 < sizeof($markups)) {
+                    $afterMarkItem = $markups[$index + 1];
+                    if ($afterMarkItem->tag == 'span'
+                        && $markupItem->start == $afterMarkItem->start
+                        && $markupItem->end == $afterMarkItem->end
+                    ) {
+                        $style .= " {$afterMarkItem->css}:{$afterMarkItem->value};";
+                        continue;
+                    }
+                }
+                $attrs = "style='{$style}'";
                 $currentText = $this->insertMarkTag($markupItem, $currentText, 'span', $attrs);
+                $style = '';
             }
             if ($markupItem->tag == 'strong') {
                 $currentText = $this->insertMarkTag($markupItem, $currentText, 'strong', '');
@@ -314,6 +335,10 @@ class Utility
             if ($markupItem->tag == 'a') {
                 $attrs = "href=" . $markupItem->source;
                 $currentText = $this->insertMarkTag($markupItem, $currentText, 'a', $attrs);
+            }
+            if ($markupItem->tag == 'em') {
+                $currentText = $this->insertMarkTag($markupItem, $currentText, 'em', '');
+
             }
         }
         return $currentText;

@@ -60,22 +60,24 @@ class BuildMarkups
     public function buildSpanMarkUp($item, $baseItem)
     {
         $text = Utility::Instance()->trimContent(strip_tags($item->innerHtml()));
-        $color = Utility::Instance()->getCssValueFromItem($item, 'color');
+        $cssArray = Utility::Instance()->getCssValueFromItem($item); // css value array
         $pos = $this->getStartEnd($item, $baseItem);
 
+        $markUp = [];
         if (!empty($text)) {
-            $markUp = [
-                'tag' => 'span',
-                'value' => $color,
-                'start' => $pos['start'],
-                'end' => $pos['end'],
-                'text' => $text,
-            ];
-
-            return $markUp;
-        } else {
-            return [];
+            foreach ($cssArray as $css => $value) {
+                $markUp[] = [
+                    'tag' => 'span',
+                    'css' => $css,
+                    'value' => $value,
+                    'start' => $pos['start'],
+                    'end' => $pos['end'],
+                    'text' => $text,
+                ];
+            }
         }
+
+        return $markUp;
     }
 
     /**
@@ -170,5 +172,29 @@ class BuildMarkups
     public function buildTag($item, $tagName, $attrs)
     {
         return "<$tagName $attrs>" . $item . "</$tagName>";
+    }
+
+    /**
+     * em 斜体辅助标记
+     * @param $item
+     * @param $baseItem
+     * @return array
+     */
+    public function buildEmMarkup($item, $baseItem)
+    {
+        $text = Utility::Instance()->trimContent(strip_tags($item->innerHtml()));
+        $pos = $this->getStartEnd($item, $baseItem);
+
+        if (!empty($text)) {
+            $markUp = [
+                'tag' => 'em',
+                'start' => $pos['start'],
+                'end' => $pos['end'],
+                'text' => $text
+            ];
+            return $markUp;
+        } else {
+            return [];
+        }
     }
 }
